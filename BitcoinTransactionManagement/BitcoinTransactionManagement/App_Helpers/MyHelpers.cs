@@ -50,7 +50,6 @@ namespace BitcoinTransactionManagement.Helpers
             }
             return MvcHtmlString.Create(sb.ToString());
         }
-
     }
 
     public class CheckBoxListInfo
