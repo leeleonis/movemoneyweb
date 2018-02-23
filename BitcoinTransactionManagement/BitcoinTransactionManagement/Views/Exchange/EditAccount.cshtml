@@ -1,0 +1,80 @@
+﻿@model BitcoinTransactionManagement.Models.Account
+@{
+    ViewBag.Title = "EditAccount";
+}
+<div id="content">
+    <div class="jarviswidget" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+         data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+        <header>
+            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+
+            <h2>新增帳戶</h2>
+        </header>
+
+        <div>
+            <div class="widget-body no-padding">
+                @using (Html.BeginForm("EditAccount", "Exchange", new { }, FormMethod.Post, new { id = "form1", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    if (Html.ValidationSummary(true) != null)
+                    {
+                        <div class="alert alert-danger alert-block">
+                            <h4 class="alert-heading">@Html.ValidationSummary()</h4>
+                        </div>
+                    }
+
+                    <div id="tab_container">
+
+                        <div class="tab_content" id="tab1">
+                            <div class="padding-20">
+                                <fieldset>
+                                    <legend>@*&nbsp;訂閱名單*@</legend>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @*@Html.Hidden("ExchangeId", Model.ExchangeId)*@
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">帳戶名稱：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">APIKey：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.TextBoxFor(x => x.APIKey, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.APIKey, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">Secret：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.TextBoxFor(x => x.Secret, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(x => x.Secret, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-footer">
+                        <a class="btn btn-default" href="@Url.Action("MainAccount", new { ExchangeId = Model.ExchangeId })">取消</a>
+                        <button id="SendButton" class="btn btn-primary" type="button"><i class="fa fa-save"></i> &nbsp;確認</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+
+        $("#SendButton").click(function () {
+            if (confirm("更動帳號將會使相關執行程式關閉，您確定這樣做嗎？")) {
+                $("#form1").submit();
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,148 @@
+﻿@model BitcoinTransactionManagement.Models.Executions
+@{
+    ViewBag.Title = "EditExecutions";
+}
+<div id="content">
+    <article class="col-xs-12">
+        <div class="jarviswidget" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+             data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+            <header>
+                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                <h2>編輯</h2>
+            </header>
+
+            <div>
+                <div class="widget-body no-padding">
+                    @using (Html.BeginForm("EditExecutions", "Executions", new { }, FormMethod.Post, new { id = "form1", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        if (Html.ValidationSummary(true) != null)
+                        {
+                            <div class="alert alert-danger alert-block">
+                                <h4 class="alert-heading">@Html.ValidationSummary()</h4>
+                            </div>
+                        }
+
+                        <div class="padding-20">
+                            <fieldset>
+                                <legend>&nbsp;編輯執行</legend>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">是否開啟：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.Statuslist, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">執行名稱：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">最低下單量：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.MinQuantity, new { @class = "form-control", type = "number" })
+                                        @Html.ValidationMessageFor(x => x.MinQuantity, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">最低差價：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.MinDifferencePrices, new { @class = "form-control", type = "number" })
+                                        @Html.ValidationMessageFor(x => x.MinDifferencePrices, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">兌換類型：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.DropDownList("ExchangeType", (IEnumerable<SelectListItem>)ViewBag.ExchangeTypelist, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">幣別：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.DropDownList("CurrencyValue", (IEnumerable<SelectListItem>)ViewBag.Currencylist, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                @Html.Raw((string)ViewBag.SelectListHtml)
+                            </fieldset>
+                        </div>
+
+                        <div class="widget-footer">
+                            <a class="btn btn-default" href="@Url.Action("MainExecutions")">取消</a>
+                            <button id="SendButton" class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;確認</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+@section scripts {
+    <script>
+
+        $("#CurrencyValue").change(function () {
+            $.ajax({
+                url: '@Url.Action("GetAccountSelectList")',
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({ CurrencyValue : $("#CurrencyValue").val() }),
+                success: function (response) {
+                    if (response.success) {
+                        $(".AccountIdList_div").remove();
+                        $(".form-horizontal:last").append(response.message);
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+
+        $("#form1").submit(function (e) {
+            e.preventDefault();
+            if (confirm("編輯執行程式將會使執行程式重置，您確定這樣做嗎？")) {
+                var Status = $("#Status").val();
+                var Name = $("#Name").val();
+                var MinQuantity = $("#MinQuantity").val();
+                var MinDifferencePrices = $("#MinDifferencePrices").val();
+                var ExchangeType = $("#ExchangeType").val();
+                var CurrencyValue = $("#CurrencyValue").val();
+                var AccountIdList = [];
+                $(".AccountIdList").each(function () {
+                    AccountIdList.push($(this).val());
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("EditExecutions")",
+                    data: {
+                        Status: Status,
+                        Name: Name,
+                        MinQuantity: MinQuantity,
+                        MinDifferencePrices: MinDifferencePrices,
+                        ExchangeType: ExchangeType,
+                        CurrencyValue: CurrencyValue,
+                        AccountIdList: AccountIdList
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            location.href = ("@Url.Action("MainExecutions")");
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+}

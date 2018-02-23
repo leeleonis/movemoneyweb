@@ -1,0 +1,68 @@
+﻿@model BitcoinTransactionManagement.Models.Users
+@{
+    ViewBag.Title = "CreateUsers";
+}
+<div id="content">
+    <article class="col-xs-12">
+        <div class="jarviswidget" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+             data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+            <header>
+                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                <h2>新增</h2>
+            </header>
+
+            <div>
+                <div class="widget-body no-padding">
+                    @using (Html.BeginForm("CreateUsers", "Settings", new { }, FormMethod.Post, new { id = "form1", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        if (Html.ValidationSummary(true) != null)
+                        {
+                            <div class="alert alert-danger alert-block">
+                                <h4 class="alert-heading">@Html.ValidationSummary()</h4>
+                            </div>
+                        }
+
+                        <div class="padding-20">
+                            <fieldset>
+                                <legend>&nbsp;新增使用者</legend>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">使用者名稱：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">帳號：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.UserName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.UserName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">密碼：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <input value="" class="form-control" data-val="true"
+                                               data-val-maxlength="密碼至少須一位子母和數字，不得有非法字元，且在6~15個字元內！" data-val-maxlength-max="15"
+                                               data-val-regex="密碼至少須一位子母和數字，不得有非法字元，且在6~15個字元內！" data-val-regex-pattern="^(?!.*[^\x21-\x7e])(?=.{6,15})(?=.*[a-zA-Z])(?=.*\d).*$"
+                                               data-val-required="請填寫密碼！" id="Password" name="Password" type="password">
+                                        @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="widget-footer">
+                            <a class="btn btn-default" href="@Url.Action("MainUsers")">取消</a>
+                            <button id="SendButton" class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;確認</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </article>
+</div>

@@ -1,0 +1,84 @@
+﻿@using BitcoinTransactionManagement.Helpers
+@model BitcoinTransactionManagement.Models.Exchange
+@{
+    ViewBag.Title = "EditExchange";
+}
+<div id="content">
+    <article class="col-xs-12">
+        <div class="jarviswidget" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+             data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+            <header>
+                <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                <h2>編輯</h2>
+            </header>
+
+            <div>
+                <div class="widget-body no-padding">
+                    @using (Html.BeginForm("EditExchange", "Exchange", new { }, FormMethod.Post, new { id = "form1", enctype = "multipart/form-data", @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        if (Html.ValidationSummary(true) != null)
+                        {
+                            <div class="alert alert-danger alert-block">
+                                <h4 class="alert-heading">@Html.ValidationSummary()</h4>
+                            </div>
+                        }
+
+                        <div class="padding-20">
+                            <fieldset>
+                                <legend>&nbsp;編輯交易所</legend>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">交易所名稱：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">交易所網址：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.ExchangeUrl, new { @class = "form-control", type = "url" })
+                                        @Html.ValidationMessageFor(x => x.ExchangeUrl, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">手續費率：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.TextBoxFor(x => x.ProcessingFee, new { @class = "form-control", type = "number" })
+                                        @Html.ValidationMessageFor(x => x.ProcessingFee, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 control-label">幣別設定：</label>
+                                    <div class="col-xs-12 col-sm-6">
+                                        @Html.CheckBoxList("CurrencyCheckBox", (List<CheckBoxListInfo>)ViewBag.CurrencyCheckBox)
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+
+                        <div class="widget-footer">
+                            <a class="btn btn-default" href="@Url.Action("MainExchange")">取消</a>
+                            <button id="SendButton" class="btn btn-primary" type="button"><i class="fa fa-save"></i> &nbsp;確認</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+@section scripts {
+    <script>
+
+        $("#SendButton").click(function () {
+            if (confirm("更動交易所將會使相關執行程式關閉，且刪除交易所內取消幣別之帳戶餘額紀錄，您確定這樣做嗎？")) {
+                $("#form1").submit();
+            }
+        });
+
+</script>
+}

@@ -1,0 +1,162 @@
+﻿@model PagedList<BitcoinTransactionManagement.Models.Executions>
+@{
+    ViewBag.Title = "MainExecutions";
+}
+<div id="content">
+    <div class="jarviswidget jarviswidget-color-darken" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+         data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+        <header>
+            <span class="widget-icon"><i class="fa fa-table"></i></span>
+            <h2>執行管理 列表</h2>
+        </header>
+
+        <div>
+            <div class="widget-body no-padding">
+                <div class="widget-body-toolbar">
+                    <div>
+                        <form id="form1" class="form-inline" role="form">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">執行名稱</span>
+                                    @Html.TextBox("Name", "", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <br><br>
+                            <button type="submit" id="EditSubmit" class="btn btn-primary">
+                                <i class="glyphicon glyphicon-search"></i> &nbsp;查詢
+                            </button>
+                            <button type="button" id="Button" class="btn btn-primary" onclick="location.href = '@Url.Action("MainExecutions")'">
+                                <i class="glyphicon glyphicon-repeat"></i> &nbsp;取消查詢
+                            </button>
+                        </form>
+                    </div>
+                    <hr>
+
+                    <div class="text-right">
+                        <a class="btn btn-success" href="@Url.Action("CreateExecutions")">
+                            <i class="fa fa-plus"></i> &nbsp;新增執行
+                        </a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <tr>
+                            <th width="5%" class="text-center">狀態</th>
+                            <th>執行名稱</th>
+                            <th>最低下單量</th>
+                            <th>最低價差</th>
+                            <th>兌換類型</th>
+                            <th>幣別</th>
+                            <th width="20%">即時訊息</th>
+                            <th width="5%" class="text-center">紀錄</th>
+                            <th width="5%" class="text-center">編輯</th>
+                            <th width="5%" class="text-center">刪除</th>
+                        </tr>
+
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @if (item.Status == 0)
+                                        {
+                                            @:關閉
+                                        }
+                                        else if (item.Status == 1)
+                                        {
+                                            @:開啟
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.MinQuantity
+                                    </td>
+                                    <td>
+                                        @item.MinDifferencePrices
+                                    </td>
+                                    <td>
+                                        @item.ExchangeType
+                                    </td>
+                                    <td>
+                                        @item.Currency.Name
+                                    </td>
+                                    <td>
+                                        <span id="@item.id"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-info btn-xs" onclick="location.href = '@Url.Action("MainTransactionConfirmed", new { ExecutionsId = item.id })'">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-info btn-xs" onclick="location.href = '@Url.Action("EditExecutions", new { id = item.id })'">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-danger btn-xs del" onclick="Delete('@item.Name', '@item.id')">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+
+                @*<span id="t1"></span>*@
+                @*<span id="t3"></span>*@
+
+                @*分頁*@
+                <div class="widget-footer text-center">
+                    @Html.PagedListPager(Model, generatePageUrl: page => Url.Action("MainExecutions", new { page = page }) + "&" + TempData["QueryString"])
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+<script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+<script src="~/signalr/hubs"></script>
+<script>
+
+    $(function () {
+
+
+        var myHub = $.connection.myhub;
+        $.connection.hub.logging = true;
+        $.connection.hub.start();
+        $.connection.hub.start().done(function () {
+            myHub.server.myhubtime();
+        });
+
+        //myHub.client.SendServerTime1 = function (message,std) {
+        //    $("#t1").text("(" + message + ")");
+        //};
+        myHub.client.Message = function (result) {
+            $("#" + result.ExecutionsId).text(result.Message);
+        };
+        //myHub.client.SendServerTime2 = function (message, std) {
+        //    $("#t3").text("(" + message + ")");
+        //};
+    });
+
+    function Delete(UserName, id) {
+        if (confirm("您確定要刪除 " + UserName + " 此執行？")) {
+            $.post("@Url.Action("DeleteExecutions", "Executions")", { id: id }, function (result) {
+                if (result.success) {
+                    location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            });
+        }
+    }
+</script>
+}

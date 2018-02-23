@@ -1,0 +1,65 @@
+﻿@model BitcoinTransactionManagement.Models.FundsBalance
+@using BitcoinTransactionManagement.Models
+@{
+    ViewBag.Title = "CreateFundsBalance";
+    Account Account = (Account)ViewBag.Account;
+}
+<div id="content">
+    <div class="jarviswidget" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+         data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+        <header>
+            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+
+            <h2>貨幣更動</h2>
+        </header>
+
+        <div>
+            <div class="widget-body no-padding">
+                @using (Html.BeginForm("CreateFundsBalance", "Exchange", new { }, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    if (Html.ValidationSummary(true) != null)
+                    {
+                        <div class="alert alert-danger alert-block">
+                            <h4 class="alert-heading">@Html.ValidationSummary()</h4>
+                        </div>
+                    }
+
+                    <div id="tab_container">
+
+                        <div class="tab_content" id="tab1">
+                            <div class="padding-20">
+                                <fieldset>
+                                    <legend>@*&nbsp;訂閱名單*@</legend>
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.Hidden("AccountId", Account.id)
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-xs-12 col-sm-3 control-label">幣別：</label>
+                                            <div class="col-xs-12 col-sm-6">
+                                                @Html.DropDownList("CurrencyVal", (IEnumerable<SelectListItem>)ViewBag.CurrencySelectList, "請選擇", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12 col-sm-3 control-label">異動數量：</label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", type = "number" })
+                                            @Html.ValidationMessageFor(x => x.Quantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-footer">
+                        <a class="btn btn-default" href="@Url.Action("MainAccount", new { ExchangeId = Account.ExchangeId })">取消</a>
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> &nbsp;確認</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

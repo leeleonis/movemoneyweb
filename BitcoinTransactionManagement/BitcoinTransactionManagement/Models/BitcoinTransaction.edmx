@@ -1,0 +1,959 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BitcoinTransactionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExchangeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="APIKey" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Secret" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+          <Property Name="UpdateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updatedt" Type="datetime" />
+          <Property Name="DisableID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabledt" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Exchange">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExchangeUrl" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProcessingFee" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+          <Property Name="UpdateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updatedt" Type="datetime" />
+          <Property Name="DisableID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabledt" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExchangeCurrency">
+          <Key>
+            <PropertyRef Name="ExchangeId" />
+            <PropertyRef Name="CurrencyVal" />
+          </Key>
+          <Property Name="ExchangeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CurrencyVal" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ExchangeTypes">
+          <Key>
+            <PropertyRef Name="ExchangeType" />
+            <PropertyRef Name="ExchangeId" />
+          </Key>
+          <Property Name="ExchangeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExchangeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MainCurrency" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeputyCurrency" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Executions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CurrencyValue" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MinQuantity" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="MinDifferencePrices" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ExchangeType" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+          <Property Name="UpdateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updatedt" Type="datetime" />
+          <Property Name="DisableID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabledt" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ExecutionsAccount">
+          <Key>
+            <PropertyRef Name="ExecutionsId" />
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="ExecutionsId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FundsBalance">
+          <Key>
+            <PropertyRef Name="AccountId" />
+            <PropertyRef Name="CurrencyVal" />
+          </Key>
+          <Property Name="AccountId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CurrencyVal" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+          <Property Name="UpdateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updatedt" Type="datetime" />
+          <Property Name="DisableID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabledt" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionConfirmed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransactionRecordsId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Prices" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ProcessingPrices" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ProcessingFee" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="Createdt" Type="datetime" Nullable="false" />
+          <Property Name="TransactionType" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TransactionRecords">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExecutionsId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Createdt" Type="datetime" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="Profit" Type="decimal" Precision="18" Scale="10" Nullable="false" />
+          <Property Name="ExchangeType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Createdt" Type="datetime" />
+          <Property Name="UpdateID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updatedt" Type="datetime" />
+          <Property Name="DisableID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Disabledt" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Account_Exchange">
+          <End Role="Exchange" Type="Self.Exchange" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeCurrency_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="ExchangeCurrency" Type="Self.ExchangeCurrency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeCurrency">
+              <PropertyRef Name="CurrencyVal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeCurrency_Exchange">
+          <End Role="Exchange" Type="Self.Exchange" Multiplicity="1" />
+          <End Role="ExchangeCurrency" Type="Self.ExchangeCurrency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExchangeCurrency">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Currency">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="ExchangeTypes" Type="Self.ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="MainCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Currency1">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="ExchangeTypes" Type="Self.ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="DeputyCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Exchange">
+          <End Role="Exchange" Type="Self.Exchange" Multiplicity="1" />
+          <End Role="ExchangeTypes" Type="Self.ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Executions_Currency1">
+          <End Role="Currency" Type="Self.Currency" Multiplicity="1" />
+          <End Role="Executions" Type="Self.Executions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="Executions">
+              <PropertyRef Name="CurrencyValue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExecutionsAccount_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="ExecutionsAccount" Type="Self.ExecutionsAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExecutionsAccount">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExecutionsAccount_Executions">
+          <End Role="Executions" Type="Self.Executions" Multiplicity="1" />
+          <End Role="ExecutionsAccount" Type="Self.ExecutionsAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExecutionsAccount">
+              <PropertyRef Name="ExecutionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FundsBalance_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="FundsBalance" Type="Self.FundsBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FundsBalance">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionConfirmed_TransactionRecords">
+          <End Role="TransactionRecords" Type="Self.TransactionRecords" Multiplicity="1" />
+          <End Role="TransactionConfirmed" Type="Self.TransactionConfirmed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionRecords">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TransactionConfirmed">
+              <PropertyRef Name="TransactionRecordsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionRecords_Executions">
+          <End Role="Executions" Type="Self.Executions" Multiplicity="1" />
+          <End Role="TransactionRecords" Type="Self.TransactionRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TransactionRecords">
+              <PropertyRef Name="ExecutionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BitcoinTransactionModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Currency" EntityType="Self.Currency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exchange" EntityType="Self.Exchange" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExchangeCurrency" EntityType="Self.ExchangeCurrency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExchangeTypes" EntityType="Self.ExchangeTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Executions" EntityType="Self.Executions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExecutionsAccount" EntityType="Self.ExecutionsAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FundsBalance" EntityType="Self.FundsBalance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionConfirmed" EntityType="Self.TransactionConfirmed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionRecords" EntityType="Self.TransactionRecords" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Account_Exchange" Association="Self.FK_Account_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeCurrency_Currency" Association="Self.FK_ExchangeCurrency_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeCurrency" EntitySet="ExchangeCurrency" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeCurrency_Exchange" Association="Self.FK_ExchangeCurrency_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="ExchangeCurrency" EntitySet="ExchangeCurrency" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Currency" Association="Self.FK_ExchangeTypes_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Currency1" Association="Self.FK_ExchangeTypes_Currency1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Exchange" Association="Self.FK_ExchangeTypes_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Executions_Currency1" Association="Self.FK_Executions_Currency1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Executions" EntitySet="Executions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExecutionsAccount_Account" Association="Self.FK_ExecutionsAccount_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="ExecutionsAccount" EntitySet="ExecutionsAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExecutionsAccount_Executions" Association="Self.FK_ExecutionsAccount_Executions">
+            <End Role="Executions" EntitySet="Executions" />
+            <End Role="ExecutionsAccount" EntitySet="ExecutionsAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FundsBalance_Account" Association="Self.FK_FundsBalance_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="FundsBalance" EntitySet="FundsBalance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionConfirmed_TransactionRecords" Association="Self.FK_TransactionConfirmed_TransactionRecords">
+            <End Role="TransactionRecords" EntitySet="TransactionRecords" />
+            <End Role="TransactionConfirmed" EntitySet="TransactionConfirmed" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionRecords_Executions" Association="Self.FK_TransactionRecords_Executions">
+            <End Role="Executions" EntitySet="Executions" />
+            <End Role="TransactionRecords" EntitySet="TransactionRecords" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BitcoinTransactionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BitcoinTransactionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account" EntityType="BitcoinTransactionModel.Account" />
+          <EntitySet Name="Currency" EntityType="BitcoinTransactionModel.Currency" />
+          <EntitySet Name="Exchange" EntityType="BitcoinTransactionModel.Exchange" />
+          <EntitySet Name="ExchangeCurrency" EntityType="BitcoinTransactionModel.ExchangeCurrency" />
+          <EntitySet Name="ExchangeTypes" EntityType="BitcoinTransactionModel.ExchangeTypes" />
+          <EntitySet Name="Executions" EntityType="BitcoinTransactionModel.Executions" />
+          <EntitySet Name="ExecutionsAccount" EntityType="BitcoinTransactionModel.ExecutionsAccount" />
+          <EntitySet Name="FundsBalance" EntityType="BitcoinTransactionModel.FundsBalance" />
+          <EntitySet Name="Members" EntityType="BitcoinTransactionModel.Members" />
+          <EntitySet Name="TransactionConfirmed" EntityType="BitcoinTransactionModel.TransactionConfirmed" />
+          <EntitySet Name="TransactionRecords" EntityType="BitcoinTransactionModel.TransactionRecords" />
+          <EntitySet Name="Users" EntityType="BitcoinTransactionModel.Users" />
+          <AssociationSet Name="FK_Account_Exchange" Association="BitcoinTransactionModel.FK_Account_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExecutionsAccount_Account" Association="BitcoinTransactionModel.FK_ExecutionsAccount_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="ExecutionsAccount" EntitySet="ExecutionsAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FundsBalance_Account" Association="BitcoinTransactionModel.FK_FundsBalance_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="FundsBalance" EntitySet="FundsBalance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeCurrency_Currency" Association="BitcoinTransactionModel.FK_ExchangeCurrency_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeCurrency" EntitySet="ExchangeCurrency" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Currency" Association="BitcoinTransactionModel.FK_ExchangeTypes_Currency">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Currency1" Association="BitcoinTransactionModel.FK_ExchangeTypes_Currency1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Executions_Currency1" Association="BitcoinTransactionModel.FK_Executions_Currency1">
+            <End Role="Currency" EntitySet="Currency" />
+            <End Role="Executions" EntitySet="Executions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeCurrency_Exchange" Association="BitcoinTransactionModel.FK_ExchangeCurrency_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="ExchangeCurrency" EntitySet="ExchangeCurrency" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExchangeTypes_Exchange" Association="BitcoinTransactionModel.FK_ExchangeTypes_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="ExchangeTypes" EntitySet="ExchangeTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExecutionsAccount_Executions" Association="BitcoinTransactionModel.FK_ExecutionsAccount_Executions">
+            <End Role="Executions" EntitySet="Executions" />
+            <End Role="ExecutionsAccount" EntitySet="ExecutionsAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionRecords_Executions" Association="BitcoinTransactionModel.FK_TransactionRecords_Executions">
+            <End Role="Executions" EntitySet="Executions" />
+            <End Role="TransactionRecords" EntitySet="TransactionRecords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionConfirmed_TransactionRecords" Association="BitcoinTransactionModel.FK_TransactionConfirmed_TransactionRecords">
+            <End Role="TransactionRecords" EntitySet="TransactionRecords" />
+            <End Role="TransactionConfirmed" EntitySet="TransactionConfirmed" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="ExchangeId" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APIKey" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Secret" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updatedt" Type="DateTime" Precision="3" />
+          <Property Name="DisableID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabledt" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Exchange" Relationship="BitcoinTransactionModel.FK_Account_Exchange" FromRole="Account" ToRole="Exchange" />
+          <NavigationProperty Name="ExecutionsAccount" Relationship="BitcoinTransactionModel.FK_ExecutionsAccount_Account" FromRole="Account" ToRole="ExecutionsAccount" />
+          <NavigationProperty Name="FundsBalance" Relationship="BitcoinTransactionModel.FK_FundsBalance_Account" FromRole="Account" ToRole="FundsBalance" />
+        </EntityType>
+        <EntityType Name="Currency">
+          <Key>
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ExchangeCurrency" Relationship="BitcoinTransactionModel.FK_ExchangeCurrency_Currency" FromRole="Currency" ToRole="ExchangeCurrency" />
+          <NavigationProperty Name="ExchangeTypes" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Currency" FromRole="Currency" ToRole="ExchangeTypes" />
+          <NavigationProperty Name="ExchangeTypes1" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Currency1" FromRole="Currency" ToRole="ExchangeTypes" />
+          <NavigationProperty Name="Executions" Relationship="BitcoinTransactionModel.FK_Executions_Currency1" FromRole="Currency" ToRole="Executions" />
+        </EntityType>
+        <EntityType Name="Exchange">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExchangeUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessingFee" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updatedt" Type="DateTime" Precision="3" />
+          <Property Name="DisableID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabledt" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="BitcoinTransactionModel.FK_Account_Exchange" FromRole="Exchange" ToRole="Account" />
+          <NavigationProperty Name="ExchangeCurrency" Relationship="BitcoinTransactionModel.FK_ExchangeCurrency_Exchange" FromRole="Exchange" ToRole="ExchangeCurrency" />
+          <NavigationProperty Name="ExchangeTypes" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Exchange" FromRole="Exchange" ToRole="ExchangeTypes" />
+        </EntityType>
+        <EntityType Name="ExchangeCurrency">
+          <Key>
+            <PropertyRef Name="ExchangeId" />
+            <PropertyRef Name="CurrencyVal" />
+          </Key>
+          <Property Name="ExchangeId" Type="Guid" Nullable="false" />
+          <Property Name="CurrencyVal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Currency" Relationship="BitcoinTransactionModel.FK_ExchangeCurrency_Currency" FromRole="ExchangeCurrency" ToRole="Currency" />
+          <NavigationProperty Name="Exchange" Relationship="BitcoinTransactionModel.FK_ExchangeCurrency_Exchange" FromRole="ExchangeCurrency" ToRole="Exchange" />
+        </EntityType>
+        <EntityType Name="ExchangeTypes">
+          <Key>
+            <PropertyRef Name="ExchangeType" />
+            <PropertyRef Name="ExchangeId" />
+          </Key>
+          <Property Name="ExchangeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExchangeId" Type="Guid" Nullable="false" />
+          <Property Name="MainCurrency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeputyCurrency" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Currency" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Currency" FromRole="ExchangeTypes" ToRole="Currency" />
+          <NavigationProperty Name="Currency1" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Currency1" FromRole="ExchangeTypes" ToRole="Currency" />
+          <NavigationProperty Name="Exchange" Relationship="BitcoinTransactionModel.FK_ExchangeTypes_Exchange" FromRole="ExchangeTypes" ToRole="Exchange" />
+        </EntityType>
+        <EntityType Name="Executions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="CurrencyValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MinQuantity" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="MinDifferencePrices" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="ExchangeType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updatedt" Type="DateTime" Precision="3" />
+          <Property Name="DisableID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabledt" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Currency" Relationship="BitcoinTransactionModel.FK_Executions_Currency1" FromRole="Executions" ToRole="Currency" />
+          <NavigationProperty Name="ExecutionsAccount" Relationship="BitcoinTransactionModel.FK_ExecutionsAccount_Executions" FromRole="Executions" ToRole="ExecutionsAccount" />
+          <NavigationProperty Name="TransactionRecords" Relationship="BitcoinTransactionModel.FK_TransactionRecords_Executions" FromRole="Executions" ToRole="TransactionRecords" />
+        </EntityType>
+        <EntityType Name="ExecutionsAccount">
+          <Key>
+            <PropertyRef Name="ExecutionsId" />
+            <PropertyRef Name="AccountId" />
+          </Key>
+          <Property Name="ExecutionsId" Type="Guid" Nullable="false" />
+          <Property Name="AccountId" Type="Guid" Nullable="false" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="BitcoinTransactionModel.FK_ExecutionsAccount_Account" FromRole="ExecutionsAccount" ToRole="Account" />
+          <NavigationProperty Name="Executions" Relationship="BitcoinTransactionModel.FK_ExecutionsAccount_Executions" FromRole="ExecutionsAccount" ToRole="Executions" />
+        </EntityType>
+        <EntityType Name="FundsBalance">
+          <Key>
+            <PropertyRef Name="AccountId" />
+            <PropertyRef Name="CurrencyVal" />
+          </Key>
+          <Property Name="AccountId" Type="Guid" Nullable="false" />
+          <Property Name="CurrencyVal" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account" Relationship="BitcoinTransactionModel.FK_FundsBalance_Account" FromRole="FundsBalance" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updatedt" Type="DateTime" Precision="3" />
+          <Property Name="DisableID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabledt" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionConfirmed">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="TransactionRecordsId" Type="Guid" Nullable="false" />
+          <Property Name="AccountId" Type="Guid" Nullable="false" />
+          <Property Name="Prices" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="ProcessingPrices" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="ProcessingFee" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="Createdt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransactionType" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TransactionRecords" Relationship="BitcoinTransactionModel.FK_TransactionConfirmed_TransactionRecords" FromRole="TransactionConfirmed" ToRole="TransactionRecords" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TransactionRecords">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="ExecutionsId" Type="Guid" Nullable="false" />
+          <Property Name="Createdt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="Profit" Type="Decimal" Nullable="false" Precision="18" Scale="10" />
+          <Property Name="ExchangeType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Executions" Relationship="BitcoinTransactionModel.FK_TransactionRecords_Executions" FromRole="TransactionRecords" ToRole="Executions" />
+          <NavigationProperty Name="TransactionConfirmed" Relationship="BitcoinTransactionModel.FK_TransactionConfirmed_TransactionRecords" FromRole="TransactionRecords" ToRole="TransactionConfirmed" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Createdt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updatedt" Type="DateTime" Precision="3" />
+          <Property Name="DisableID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Disabledt" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Account_Exchange">
+          <End Type="BitcoinTransactionModel.Exchange" Role="Exchange" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.Account" Role="Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExecutionsAccount_Account">
+          <End Type="BitcoinTransactionModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExecutionsAccount" Role="ExecutionsAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExecutionsAccount">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FundsBalance_Account">
+          <End Type="BitcoinTransactionModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.FundsBalance" Role="FundsBalance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FundsBalance">
+              <PropertyRef Name="AccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeCurrency_Currency">
+          <End Type="BitcoinTransactionModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExchangeCurrency" Role="ExchangeCurrency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeCurrency">
+              <PropertyRef Name="CurrencyVal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Currency">
+          <End Type="BitcoinTransactionModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExchangeTypes" Role="ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="MainCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Currency1">
+          <End Type="BitcoinTransactionModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExchangeTypes" Role="ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="DeputyCurrency" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Executions_Currency1">
+          <End Type="BitcoinTransactionModel.Currency" Role="Currency" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.Executions" Role="Executions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Currency">
+              <PropertyRef Name="Value" />
+            </Principal>
+            <Dependent Role="Executions">
+              <PropertyRef Name="CurrencyValue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeCurrency_Exchange">
+          <End Type="BitcoinTransactionModel.Exchange" Role="Exchange" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExchangeCurrency" Role="ExchangeCurrency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExchangeCurrency">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExchangeTypes_Exchange">
+          <End Type="BitcoinTransactionModel.Exchange" Role="Exchange" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExchangeTypes" Role="ExchangeTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExchangeTypes">
+              <PropertyRef Name="ExchangeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExecutionsAccount_Executions">
+          <End Type="BitcoinTransactionModel.Executions" Role="Executions" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.ExecutionsAccount" Role="ExecutionsAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ExecutionsAccount">
+              <PropertyRef Name="ExecutionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionRecords_Executions">
+          <End Type="BitcoinTransactionModel.Executions" Role="Executions" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.TransactionRecords" Role="TransactionRecords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executions">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TransactionRecords">
+              <PropertyRef Name="ExecutionsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionConfirmed_TransactionRecords">
+          <End Type="BitcoinTransactionModel.TransactionRecords" Role="TransactionRecords" Multiplicity="1" />
+          <End Type="BitcoinTransactionModel.TransactionConfirmed" Role="TransactionConfirmed" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionRecords">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TransactionConfirmed">
+              <PropertyRef Name="TransactionRecordsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BitcoinTransactionModelStoreContainer" CdmEntityContainer="BitcoinTransactionEntities">
+          <EntitySetMapping Name="Account">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Disabledt" ColumnName="Disabledt" />
+                <ScalarProperty Name="DisableID" ColumnName="DisableID" />
+                <ScalarProperty Name="Updatedt" ColumnName="Updatedt" />
+                <ScalarProperty Name="UpdateID" ColumnName="UpdateID" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="Secret" ColumnName="Secret" />
+                <ScalarProperty Name="APIKey" ColumnName="APIKey" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ExchangeId" ColumnName="ExchangeId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Currency">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Currency">
+              <MappingFragment StoreEntitySet="Currency">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exchange">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Exchange">
+              <MappingFragment StoreEntitySet="Exchange">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Disabledt" ColumnName="Disabledt" />
+                <ScalarProperty Name="DisableID" ColumnName="DisableID" />
+                <ScalarProperty Name="Updatedt" ColumnName="Updatedt" />
+                <ScalarProperty Name="UpdateID" ColumnName="UpdateID" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="ProcessingFee" ColumnName="ProcessingFee" />
+                <ScalarProperty Name="ExchangeUrl" ColumnName="ExchangeUrl" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExchangeCurrency">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.ExchangeCurrency">
+              <MappingFragment StoreEntitySet="ExchangeCurrency">
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="CurrencyVal" ColumnName="CurrencyVal" />
+                <ScalarProperty Name="ExchangeId" ColumnName="ExchangeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExchangeTypes">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.ExchangeTypes">
+              <MappingFragment StoreEntitySet="ExchangeTypes">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="DeputyCurrency" ColumnName="DeputyCurrency" />
+                <ScalarProperty Name="MainCurrency" ColumnName="MainCurrency" />
+                <ScalarProperty Name="ExchangeId" ColumnName="ExchangeId" />
+                <ScalarProperty Name="ExchangeType" ColumnName="ExchangeType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Executions">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Executions">
+              <MappingFragment StoreEntitySet="Executions">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Disabledt" ColumnName="Disabledt" />
+                <ScalarProperty Name="DisableID" ColumnName="DisableID" />
+                <ScalarProperty Name="Updatedt" ColumnName="Updatedt" />
+                <ScalarProperty Name="UpdateID" ColumnName="UpdateID" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="ExchangeType" ColumnName="ExchangeType" />
+                <ScalarProperty Name="MinDifferencePrices" ColumnName="MinDifferencePrices" />
+                <ScalarProperty Name="MinQuantity" ColumnName="MinQuantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CurrencyValue" ColumnName="CurrencyValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExecutionsAccount">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.ExecutionsAccount">
+              <MappingFragment StoreEntitySet="ExecutionsAccount">
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="ExecutionsId" ColumnName="ExecutionsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FundsBalance">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.FundsBalance">
+              <MappingFragment StoreEntitySet="FundsBalance">
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CurrencyVal" ColumnName="CurrencyVal" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Members">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Disabledt" ColumnName="Disabledt" />
+                <ScalarProperty Name="DisableID" ColumnName="DisableID" />
+                <ScalarProperty Name="Updatedt" ColumnName="Updatedt" />
+                <ScalarProperty Name="UpdateID" ColumnName="UpdateID" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionConfirmed">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.TransactionConfirmed">
+              <MappingFragment StoreEntitySet="TransactionConfirmed">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="ProcessingFee" ColumnName="ProcessingFee" />
+                <ScalarProperty Name="ProcessingPrices" ColumnName="ProcessingPrices" />
+                <ScalarProperty Name="Prices" ColumnName="Prices" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="TransactionRecordsId" ColumnName="TransactionRecordsId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionRecords">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.TransactionRecords">
+              <MappingFragment StoreEntitySet="TransactionRecords">
+                <ScalarProperty Name="ExchangeType" ColumnName="ExchangeType" />
+                <ScalarProperty Name="Profit" ColumnName="Profit" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="ExecutionsId" ColumnName="ExecutionsId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BitcoinTransactionModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Disabledt" ColumnName="Disabledt" />
+                <ScalarProperty Name="DisableID" ColumnName="DisableID" />
+                <ScalarProperty Name="Updatedt" ColumnName="Updatedt" />
+                <ScalarProperty Name="UpdateID" ColumnName="UpdateID" />
+                <ScalarProperty Name="Createdt" ColumnName="Createdt" />
+                <ScalarProperty Name="CreateID" ColumnName="CreateID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

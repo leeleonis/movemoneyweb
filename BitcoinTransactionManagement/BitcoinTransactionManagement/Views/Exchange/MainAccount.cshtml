@@ -1,0 +1,157 @@
+﻿@model PagedList<BitcoinTransactionManagement.Models.Account>
+@using BitcoinTransactionManagement.Models
+@{
+    ViewBag.Title = "MainAccount";
+    Exchange Exchange = (Exchange)ViewBag.Exchange;
+    Guid ExchangeId = Exchange.id;
+    string ExchangeName = Exchange.Name;
+    var CurrencyList = (List<Currency>)ViewBag.CurrencyList;
+}
+<div id="content">
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-togglebutton="false"
+                     data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-pencil-square-o"></i> </span>
+                        <h2>@ExchangeName 帳戶設定</h2>
+                    </header>
+
+                    <div>
+                        <div class="widget-body  no-padding">
+                            <div class="widget-body-toolbar">
+                                <div>
+                                    <form class="form-inline" role="form">
+                                        @Html.Hidden("ExchangeId", ExchangeId)
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">帳戶名稱</span>
+                                                @Html.TextBox("Name", "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">帳號</span>
+                                                @Html.TextBox("APIKey", "", new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                        <button type="submit" id="ButtonSubmit" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-search"></i> &nbsp;查詢
+                                        </button>
+                                        <button type="button" id="Button" class="btn btn-primary" onclick="location.href = '@Url.Action("MainAccount", new { ExchangeId = ExchangeId })'">
+                                            <i class="glyphicon glyphicon-repeat"></i> &nbsp;取消查詢
+                                        </button>
+                                    </form>
+                                </div>
+                                <hr>
+
+                                <div class="text-right">
+                                    <a class="btn btn-success" href="@Url.Action("CreateAccount", new { ExchangeId = ExchangeId })">
+                                        <i class="fa fa-plus"></i> &nbsp;新增帳戶
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered table-striped" id="MyTable">
+                                    <thead>
+                                        <tr>
+                                            <th>帳戶名稱</th>
+                                            <th>APIKey</th>
+                                            @*<th>Secret</th>*@
+                                            @foreach (var Currency in CurrencyList)
+                                            {
+                                                if (Exchange.ExchangeCurrency.Where(x => x.Currency == Currency).Any())
+                                                {
+                                                    <th width="5%" class="text-center">@Currency.Name</th>
+                                                }
+                                            }
+                                            <th width="5%" class="text-center">貨幣更動</th>
+                                            <th width="5%" class="text-center">編輯</th>
+                                            <th width="5%" class="text-center">刪除</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model != null)
+                                        {
+                                            foreach (var item in Model)
+                                            {
+                                                var NeedDisabled = "";
+                                                if (item.ExecutionsAccount.Any())
+                                                {
+                                                    foreach (var ExecutionsAccount in item.ExecutionsAccount)
+                                                    {
+                                                        if (ExecutionsAccount.Executions.Status==1)
+                                                        {
+                                                            NeedDisabled = "disabled";
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.APIKey</td>
+                                                    @*<td>@item.Secret</td>*@
+                                                    @foreach (var Currency in CurrencyList)
+                                                    {
+                                                        if (Exchange.ExchangeCurrency.Where(x => x.Currency == Currency).Any())
+                                                        {
+                                                            <td>@item.FundsBalance.Where(x => x.CurrencyVal == Currency.Value).Sum(x => x.Quantity)</td>
+                                                        }
+                                                    }
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-primary btn-xs" onclick="location.href = '@Url.Action("CreateFundsBalance", new { AccountId = item.id })'" @NeedDisabled>
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-info btn-xs" onclick="location.href = '@Url.Action("EditAccount", new { id = item.id })'" @NeedDisabled>
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-danger btn-xs del" onclick="Delete('@item.Name', '@item.id')" @NeedDisabled>
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="widget-footer text-center">
+                                @Html.PagedListPager(Model, generatePageUrl: page => Url.Action("MainAccount", new { page = page }) + "&" + TempData["QueryString"])
+                            </div>
+                            <div class="widget-footer">
+                                <a class="btn btn-default" href="@Url.Action("MainExchange")">返回</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </section>
+</div>
+@section scripts {
+    <script>
+        function Delete(Name, id) {
+            if (confirm("您確定要刪除 " + Name + " 此兌換序號？")) {
+                $.post("@Url.Action("DeleteAccount", "Exchange")", { id: id }, function (result) {
+                    if (result.success) {
+                        location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                });
+            }
+        }
+    </script>
+}

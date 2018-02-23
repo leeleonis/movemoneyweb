@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9afb5a1936cd414aa866ba96b70e82f3" Name="Diagram1">
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Account" Width="1.5" PointX="3" PointY="16.5" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Currency" Width="1.5" PointX="0.75" PointY="6.25" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Exchange" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.ExchangeCurrency" Width="1.5" PointX="3" PointY="6.25" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.ExchangeTypes" Width="1.5" PointX="6" PointY="6.125" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Executions" Width="1.5" PointX="3" PointY="11.375" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.ExecutionsAccount" Width="1.5" PointX="5.25" PointY="16.375" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.FundsBalance" Width="1.5" PointX="5.25" PointY="19.375" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Members" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.TransactionConfirmed" Width="1.5" PointX="7.5" PointY="12" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.TransactionRecords" Width="1.5" PointX="5.25" PointY="12.125" />
+        <EntityTypeShape EntityType="BitcoinTransactionModel.Users" Width="1.5" PointX="4.75" PointY="0.75" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_Account_Exchange" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExecutionsAccount_Account" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_FundsBalance_Account" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExchangeCurrency_Currency" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExchangeTypes_Currency" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExchangeTypes_Currency1" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_Executions_Currency1" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExchangeCurrency_Exchange" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExchangeTypes_Exchange" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_ExecutionsAccount_Executions" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_TransactionRecords_Executions" />
+        <AssociationConnector Association="BitcoinTransactionModel.FK_TransactionConfirmed_TransactionRecords" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

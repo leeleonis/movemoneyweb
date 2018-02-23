@@ -1,0 +1,141 @@
+﻿@model PagedList<BitcoinTransactionManagement.Models.TransactionConfirmed>
+@using BitcoinTransactionManagement.Models
+@{
+    ViewBag.Title = "MainTransactionConfirmed";
+    Guid ExecutionsId = (Guid)ViewBag.ExecutionsId;
+    List<Account> AccountList = (List<Account>)ViewBag.AccountList;
+}
+<div id="content">
+    <div class="jarviswidget jarviswidget-color-darken" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false"
+         data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+
+        <header>
+            <span class="widget-icon"><i class="fa fa-table"></i></span>
+            <h2>歷史紀錄 列表</h2>
+        </header>
+
+        <div>
+            <div class="widget-body no-padding">
+                <div class="widget-body-toolbar">
+                    <div>
+                        <form id="form1" class="form-inline" role="form">
+                            <div class="form-group">
+                                @Html.Hidden("ExecutionsId", ExecutionsId)
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">兌換類型</span>
+                                        @Html.DropDownList("ExchangeType", (IEnumerable<SelectListItem>)ViewBag.ExchangeTypelist, "請選擇", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">紀錄時間</span>
+                                    @Html.TextBox("StartingTime", "", new { @class = "form-control", type = "datetime-local" })
+                                </div>
+                                ～
+                                <div class="input-group">
+                                    @Html.TextBox("EndTime", "", new { @class = "form-control", type = "datetime-local" })
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">ASK/BID</span>
+                                        @Html.DropDownList("TransactionType", (IEnumerable<SelectListItem>)ViewBag.TransactionType, "請選擇", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">狀態</span>
+                                        @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.Status, "請選擇", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <button type="submit" id="EditSubmit" class="btn btn-primary">
+                                <i class="glyphicon glyphicon-search"></i> &nbsp;查詢
+                            </button>
+                            <button type="button" id="Button" class="btn btn-primary" onclick="location.href = '@Url.Action("MainTransactionConfirmed", new { ExecutionsId = ExecutionsId })'">
+                                <i class="glyphicon glyphicon-repeat"></i> &nbsp;取消查詢
+                            </button>
+                        </form>
+                    </div>
+                    <hr>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-striped">
+                        <tr>
+                            <th>配對時間</th>
+                            <th>數量</th>
+                            <th>獲利</th>
+                            <th>兌換類型</th>
+                            <th>帳戶</th>
+                            <th>交易時間</th>
+                            <th>ASK/BID</th>
+                            <th>狀態</th>
+                            <th>訊息</th>
+                        </tr>
+
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                var Account = AccountList.Find(x=>x.id==item.AccountId);
+                                <tr>
+                                    <td>
+                                        @item.TransactionRecords.Createdt
+                                    </td>
+                                    <td>
+                                        @item.TransactionRecords.Quantity
+                                    </td>
+                                    <td>
+                                        @item.TransactionRecords.Profit
+                                    </td>
+                                    <td>
+                                        @item.TransactionRecords.ExchangeType
+                                    </td>
+                                    <td>
+                                        @Account.Exchange.Name - @Account.Name
+                                    </td>
+                                    <td>
+                                        @item.Createdt
+                                    </td>
+                                    <td>
+                                        @if (item.TransactionType == 1)
+                                        {
+                                            @:BID
+	                                    }
+                                        else if (item.TransactionType == 0)
+                                        {
+                                            @:ASK
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.Status == 1)
+                                        {
+                                            @:成功
+	                                    }
+                                        else if (item.Status == -1)
+                                        {
+                                            @:失敗
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.Message
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+
+                @*分頁*@
+                <div class="widget-footer text-center">
+                    @Html.PagedListPager(Model, generatePageUrl: page => Url.Action("MainTransactionConfirmed", new { page = page }) + "&" + TempData["QueryString"])
+                </div>
+                <div class="widget-footer">
+                    <a class="btn btn-default" href="@Url.Action("MainExecutions")">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
