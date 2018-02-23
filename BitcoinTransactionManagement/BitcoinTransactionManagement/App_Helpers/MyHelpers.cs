@@ -61,7 +61,6 @@ namespace BitcoinTransactionManagement.Helpers
             this.DisplayText = DisplayText;
             this.IsChecked = IsChecked;
         }
-
         public string Value { get; set; }
         public string DisplayText { get; set; }
         public bool IsChecked { get; set; }
