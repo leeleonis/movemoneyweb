@@ -231,3 +231,5 @@ ModelManifest.xml
 /BitcoinTransactionManagement/packages/EntityFramework.6.1.3/tools/EntityFramework.psd1
 /BitcoinTransactionManagement/packages/EntityFramework.6.1.3/Content/Web.config.transform
 /BitcoinTransactionManagement/packages/EntityFramework.6.1.3/Content/App.config.transform
+*.sqlite
+/.vs

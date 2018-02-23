@@ -6,7 +6,6 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Threading.Tasks;
 using System.Threading;
-
 namespace BitcoinTransactionManagement.HubModel
 {
     //[HubName("MyHub")]
